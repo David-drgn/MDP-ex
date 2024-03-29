@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumidor</title>
+    <style>
+        input,
+        select {
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex; flex-direction: column; width: 50%; margin: auto;">
+        <input type="number" placeholder="Nº do consumidor" disabled />
+        <input type="number" placeholder="Quantidade kWh" />
+        <select>
+            <option value="1">Residencial</option>
+            <option value="2">Comercial</option>
+            <option value="3">Industrial</option>
+        </select>
+        <button onclick="send()">Enviar</button>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+    </div>
+    <script>
+        let consumidores = [];
+
+        class Consumidor {
+            numero;
+            kWh;
+            tipo;
+            valor;
+
+            constructor(nmro, mes, ty) {
+                this.numero = nmro;
+                this.kWh = mes;
+                this.tipo = ty;
+                this.calc()
+            }
+
+            calc() {
+                switch (this.tipo) {
+                    case "1":
+                        this.valor = 0.30 * this.kWh
+                        break;
+                    case "2":
+                        this.valor = 0.50 * this.kWh
+                        break;
+                    case "3":
+                        this.valor = 0.70 * this.kWh
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        function send() {
+            let button = document.getElementsByTagName('button')[0]
+            let input = document.getElementsByTagName('input')
+            let select = document.getElementsByTagName('select')
+
+            button.disabled = true
+
+            const nmro = Math.floor(Math.random() * 10000000)
+            input[0].value = nmro
+
+            if (input[1].value == "") {
+                alert("Digite o valor de kWh")
+                return
+            }
+            consumidores.push(new Consumidor(nmro, parseInt(input[1].value), select[0].value))
+
+            setTimeout(() => {
+                input[0].value = ""
+                input[1].value = ""
+                select[0].value = "1"
+                button.disabled = false
+            }, 1500)
+
+            if (consumidores.length == 3) {
+                read()
+            }
+        }
+
+        function read() {
+            let container = document.getElementsByTagName('div')
+            container[0].style.display = 'none'
+
+            let typeCons = []
+
+            consumidores.forEach(element => {
+                let span = document.createElement('span')
+                span.textContent = `Número: ${element.numero} - R$ ${Math.round(element.valor)}`
+                if (typeCons.length == 0) {
+                    typeCons.push({
+                        type: element.tipo,
+                        valor: element.valor
+                    })
+                }
+                else {
+                    let select = typeCons.find(e => e.type === element.tipo)
+                    if (select != undefined) {
+                        select.valor = select.valor + element.valor
+                    }
+                    else {
+                        typeCons.push({
+                            type: element.tipo,
+                            valor: element.valor
+                        })
+                    }
+                }
+                container[1].appendChild(span)
+            });
+
+            let media = 0
+
+            typeCons.forEach(element => {
+                let span = document.createElement('span')
+                span.textContent = `Tipo: ${element.type} - R$ ${Math.round(element.valor)}`
+                container[1].appendChild(span)
+
+                if (element.type == "1" || element.type == "2") {
+                    media = media + element.valor
+                }
+            });
+
+            console.log(consumidores.filter(e => e.tipo === "1" || e.tipo === "2"))
+
+            media = media / consumidores.filter(e => e.tipo === "1" || e.tipo === "2").length
+
+            let span = document.createElement('span')
+            span.textContent = `Média entre os tipos 1 e 2 - R$ ${Math.round(media)}`
+            container[1].appendChild(span)
+        }
+    </script>
+</body>
+
+</html>

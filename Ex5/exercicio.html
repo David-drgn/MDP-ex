@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PG</title>
+    <style>
+        .container {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .inputs {
+            display: flex;
+            width: 80%;
+            justify-content: space-around;
+        }
+
+        input {
+            width: 45%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inputs">
+            <input type="number">
+            <input type="number">
+        </div>
+        <button>Verificar</button>
+        <span>Resultado: <b></b></span>
+    </div>
+    <script>
+        var inputs = document.getElementsByTagName('input')
+        var dados = document.getElementsByTagName('b')[0]
+        var button = document.getElementsByTagName('button')[0]
+
+        function verify() {
+            if (inputs[0].value == "" || inputs[1].value == "") {
+                alert('Dados incorretos')
+                inputs[0].value = ''
+                inputs[1].value = ''
+                return
+            }
+
+            var val1 = parseInt(inputs[0].value)
+            var val2 = parseInt(inputs[1].value)
+            if (val1 < 0 || val2 < 0) {
+                alert('Dados incorretos')
+                inputs[0].value = ''
+                inputs[1].value = ''
+                return
+            }
+            const aux = val1
+            if (val1 < val2) {
+                val1 = val2
+                val2 = aux
+            }
+            var mod = val1 / val2
+            if (mod % 2 != 0 || parseInt(mod) != parseFloat(mod)) {
+                alert('Dados incorretos')
+                inputs[0].value = ''
+                inputs[1].value = ''
+                return
+            }
+            let valor = aux
+            for (let i = 0; i < 3; i++) {
+                valor = valor * mod
+                if (i == 0) dados.textContent = `${val2} - ${val1} - ${valor}`
+                else
+                    dados.textContent = `${dados.textContent} - ${valor}`
+            }
+        }
+
+        button.addEventListener('click', () => {
+            verify()
+        })
+    </script>
+</body>
+
+</html>

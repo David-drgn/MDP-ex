@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminhão</title>
+    <style>
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+        }
+
+        .container-input {
+            width: 90%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        strong {
+            width: 60px;
+            height: auto;
+            text-align: center;
+        }
+
+        #dialog {
+            background-color: white;
+        }
+
+        input {
+            width: 70%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="container-input">
+            <strong>R$</strong>
+            <input type="number" placeholder="0.00">
+        </div>
+        <span class="dados">Caminhões grandes: <b>0</b> <i></i></span>
+        <span class="dados">Caminhões médios: <b>0</b> <i></i></span>
+        <span class="dados">Caminhões pequenos: <b>0</b> <i></i></span>
+        <span class="dados">Excesso: <b></b></span>
+        <span class="dados">Total: <b></b></span>
+    </div>
+    <script>
+        const input = document.getElementsByTagName('input')[0]
+        const dados = document.getElementsByTagName('b')
+        const val = document.getElementsByTagName('i')
+
+        const grande = 6500
+        const medio = 3500
+        const pequeno = 2500
+
+        input.addEventListener('input', function () {
+            let valor = 0;
+            let countGrande = 0;
+            let countMedio = 0;
+            let countPequeno = 0;
+            try {
+                valor = parseFloat(this.value)
+                const valorAux = valor
+                if (valor > grande) {
+                    while (valor > 0) {
+                        countGrande = countGrande + 1
+                        valor = valor - 6500
+                    }
+                    if (valor < 0) {
+                        countGrande = countGrande - 1
+                        valor = valor + 6500
+                    }
+                }
+                if (valor > medio) {
+                    while (valor > 0) {
+                        countMedio = countMedio + 1
+                        valor = valor - 3500
+                    }
+                    if (valor < 0) {
+                        countMedio = countMedio - 1
+                        valor = valor + 3500
+                    }
+                }
+                if (valor > pequeno) {
+                    if (valor != 0)
+                        while (valor > 0) {
+                            countPequeno = countPequeno + 1
+                            valor = valor - 2500
+                        }
+                    if (valor < 0) {
+                        countPequeno = countPequeno - 1
+                        valor = valor + 2500
+                    }
+                    dados[4].textContent = pequeno
+                    dados[3].textContent = valor
+                    dados[2].textContent = countPequeno
+                    dados[1].textContent = countMedio
+                    dados[0].textContent = countGrande
+                }
+                else {
+                    if (valor > 0) {
+                        countPequeno = countPequeno + 1
+                        valor = valor - pequeno
+                        dados[4].textContent = pequeno
+                        dados[3].textContent = valor * -1
+                        dados[2].textContent = countPequeno
+                        dados[1].textContent = countMedio
+                        dados[0].textContent = countGrande
+                    }
+                    else {
+                        dados[4].textContent = pequeno
+                        dados[3].textContent = pequeno - valorAux
+                        dados[2].textContent = 1
+                        dados[1].textContent = countMedio
+                        dados[0].textContent = countGrande
+                    }
+                }
+            }
+            catch (e) {
+                console.error(e)
+            }
+        })
+    </script>
+</body>
+
+</html>

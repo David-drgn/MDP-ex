@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raiz</title>
+</head>
+
+<body>
+    <div>
+        <input type="number" />
+        <input type="number" />
+    </div>
+    <span>x<sup>2</sup> - 10x + 24 = 0</span>
+    <script>
+        const x1 = 4;
+        const x2 = 6;
+
+        let correct = [false, false]
+
+        const inputs = document.getElementsByTagName('input')
+        console.log("Amo te")
+        for (let i = 0; i < inputs.length; i++) {
+            const element = inputs[i];
+            if (i == 0)
+                element.addEventListener('input', function () {
+                    let val = parseInt(this.value)
+                    if (this.value == inputs[1].value) {
+                        alert("Valor repetido")
+                        correct[0] = false
+                        this.value = ''
+                        return
+                    }
+                    if (val != x1 && val != x2) {
+                        this.value = ''
+                        correct[0] = false
+                        alert("Valor errado")
+                    }
+                    else {
+                        correct[0] = true
+                    }
+                    if (correct[0] && correct[1]) alert("Acertou :)")
+                })
+            else
+                element.addEventListener('input', function () {
+                    let val = parseInt(this.value)
+                    if (this.value == inputs[0].value) {
+                        alert("Valor repetido")
+                        correct[1] = false
+                        this.value = ''
+                        return
+                    }
+                    if (val != x2 && val != x1) {
+                        alert("Valor errado")
+                        correct[1] = false
+                        this.value = ''
+                    }
+                    else {
+                        correct[1] = true
+                    }
+                    if (correct[0] && correct[1]) alert("Acertou :)")
+                })
+        }
+    </script>
+</body>
+
+</html>
