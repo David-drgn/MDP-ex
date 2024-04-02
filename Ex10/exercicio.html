@@ -1,0 +1,155 @@
+Claro, aqui está o código com a ordem das funções modificada:
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+</head>
+<body>
+    <p id="outputSudoku"></p>
+    <script>
+        let gameBoard = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ];
+
+        let userInput = [];
+
+        function isValidNumber(num) {
+            return num >= 1 && num <= 9;
+        }
+
+        function isValidPosition(pos) {
+            return pos >= 1 && pos <= 81;
+        }
+
+        function hasDuplicatesInRow(row) {
+            let count = new Array(10).fill(0);
+
+            for (let num of row) {
+                if (num !== 0 && count[num] === 1) {
+                    return true;
+                }
+                count[num]++;
+            }
+
+            return false;
+        }
+
+        function hasDuplicatesInColumn(column) {
+            let count = new Array(10).fill(0);
+
+            for (let i = 0; i < gameBoard.length; i++) {
+                let num = gameBoard[i][column];
+                if (num !== 0 && count[num] === 1) {
+                    return true;
+                }
+                count[num]++;
+            }
+
+            return false;
+        }
+        
+        function hasDuplicatesInQuadrant(startRow, startColumn) {
+            let count = new Array(10).fill(0);
+            for (let i = startRow; i < startRow + 3; i++) {
+                for (let j = startColumn; j < startColumn + 3; j++) {
+                    let num = gameBoard[i][j];
+                    if (num !== 0 && count[num] === 1) {
+                        return true;
+                    }
+                    count[num]++;
+                }
+            }
+            return false;
+        }
+        
+        function isCompleteAndValidBoard() {
+            for (let i = 0; i < gameBoard.length; i++) {
+                if (hasDuplicatesInRow(gameBoard[i]) || hasDuplicatesInColumn(i)) {
+                    return false;
+                }
+            }
+            for (let i = 0; i < 9; i += 3) {
+                for (let j = 0; j < 9; j += 3) {
+                    if (hasDuplicatesInQuadrant(i, j)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function findNextEmptyPosition() {
+            for (let i = 0; i < gameBoard.length; i++) {
+                for (let j = 0; j < gameBoard[i].length; j++) {
+                    if (gameBoard[i][j] === 0) {
+                        return { row: i, column: j };
+                    }
+                }
+            }
+            return null;
+        }
+
+        function solveSudoku() {
+            let emptyPosition = findNextEmptyPosition();
+            if (!emptyPosition) {
+                return true;
+            }
+
+            let { row, column } = emptyPosition;
+
+            for (let num = 1; num <= 9; num++) {
+                gameBoard[row][column] = num;
+                if (isCompleteAndValidBoard() && solveSudoku()) {
+                    return true;
+                }
+                gameBoard[row][column] = 0;
+            }
+
+            return false;
+        }
+
+        for (let i = 0; i < 4; i++) {
+            let number = parseInt(prompt(`Digite o ${i + 1}º número:`));
+            let position = parseInt(prompt(`Digite a posição (1-81) do ${i + 1}º número:`));
+
+            if (isValidNumber(number) && isValidPosition(position)) {
+                userInput.push({ number, position });
+            } else {
+                alert("Número ou posição inválida. Tente novamente.");
+                i--;
+            }
+        }
+
+        for (let i = 0; i < userInput.length; i++) {
+            let { number, position } = userInput[i];
+            let row = Math.floor((position - 1) / 9);
+            let column = (position - 1) % 9;
+
+            gameBoard[row][column] = number;
+        }
+
+        if (solveSudoku()) {
+            let outputSudoku = "";
+            for (let row of gameBoard) {
+                outputSudoku += row.join(" ") + "<br>";
+            }
+            document.getElementById("outputSudoku").innerHTML = outputSudoku;
+        } else {
+            document.getElementById("outputSudoku").innerHTML = "Não foi possível resolver o sudoku com as entradas fornecidas.";
+        }
+    </script>
+</body>
+</html>
+```

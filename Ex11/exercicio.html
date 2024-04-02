@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci</title>
+</head>
+
+<body>
+    <script>
+        let valIni;
+        let valFin;
+
+        let fibonacci = []
+
+        function inputVal() {
+            try {
+                valIni = parseInt(window.prompt("Digite o número de início"))
+                valFin = parseInt(window.prompt("Digite o número de término"))
+                if (valIni >= valFin) throw "Valor inicial é maior ou igual ao valor final"
+                if (parseInt(valIni) != parseFloat(valIni) || parseInt(valFin) != parseFloat(valFin)) throw "Um dos valores não é inteiro"
+                if (valIni < 0 || valFin < 0) throw "Um dos valores é menor que 0"
+
+                fibonacci.push(valIni)
+                while (fibonacci[fibonacci.length - 1] < valFin) {
+                    if (fibonacci.length == 1) fibonacci.push(valIni)
+                    else {
+                        fibonacci.push(fibonacci[fibonacci.length - 1] + fibonacci[fibonacci.length - 2])
+                    }
+                }
+
+                fibonacci.pop()
+                alert(fibonacci)
+                inputVal()
+            } catch (error) {
+                alert(error)
+                inputVal()
+            }
+        }
+        inputVal()
+    </script>
+</body>
+
+</html>
