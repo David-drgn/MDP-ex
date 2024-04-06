@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frases</title>
+</head>
+
+<body>
+    <script>
+        function inputVal() {
+            try {
+                let valIni = window.prompt("Digite a frase que deseja ver a igualdade")
+                let valFin = window.prompt("Digite a frase que deseja ver a igualdade")
+                if (valIni == "" || valFin == "") throw "Digite uma frase"
+                const val = valIni.split(" ")
+                const val1 = valFin.split(" ")
+
+                let palavras = 0
+
+                for (let i = 0; i < val.length; i++) {
+                    const element = val[i];
+                    for (let j = 0; j < val1.length; j++) {
+                        const element1 = val1[j];
+                        if(element1 == element) palavras = palavras + 1
+                    }
+                }
+
+                for (let i = 0; i < val1.length; i++) {
+                    const element = val1[i];
+                    for (let j = 0; j < val.length; j++) {
+                        const element1 = val[j];
+                        if(element1 == element) palavras = palavras + 1
+                    }
+                }
+
+                let total = val.length + val1.length
+
+                alert(`O percentual de acertividade é: ${(palavras * 100) / total}`)
+
+                inputVal()
+
+            } catch (error) {
+                alert(error)
+                inputVal()
+            }
+        }
+        inputVal()
+    </script>
+</body>
+
+</html>

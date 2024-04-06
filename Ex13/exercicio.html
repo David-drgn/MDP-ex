@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            width: 60%;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <input type="text" placeholder="Nome">
+        <input type="number" placeholder="Idade">
+        <input type="email" placeholder="Email">
+        <input type="text" placeholder="CEP" maxlength="8" minlength="8">
+        <button type="button">Enviar</button>
+        <button type="button">Ver lista</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        let cepBusca;
+
+        let usuarios = []
+
+        const inputs = document.getElementsByTagName('input');
+        const btn = document.getElementsByTagName('button')[0];
+        const ver = document.getElementsByTagName('button')[1];
+
+        btn.addEventListener('click', () => {
+            try {
+                for (let i = 0; i < inputs.length; i++) {
+                    const element = inputs[i];
+                    if (element.value == "") throw "Valor inválido"
+                    if (i == 3) {
+                        if (element.value.length != 8) throw "CEP inválido"
+                        $.getJSON("https://viacep.com.br/ws/" + element.value + "/json/?callback=?", function (dados) {
+
+                            if (!("erro" in dados)) {
+                                cepBusca = dados
+                                usuarios.push(
+                                    new usuario({
+                                        nome: inputs[0].value,
+                                        idade: inputs[1].value,
+                                        email: inputs[2].value
+                                    })
+                                )
+                            } //end if.
+                            else {
+                                throw "CEP não encontrado."
+                            }
+                        });
+
+                    }
+                }
+            }
+            catch (e) { alert(e) }
+        })
+
+        class endereco {
+            cep;
+            logradouro;
+            complemento;
+            bairro;
+            localidade;
+            uf;
+            ibge;
+            ddd;
+
+            constructor(body) {
+                this.cep = body.cep
+                this.logradouro = body.logradouro
+                this.complemento = body.complemento
+                this.bairro = body.bairro
+                this.localidade = body.localidade
+                this.uf = body.uf
+                this.ibge = body.ibge
+                this.ddd = body.ddd
+            }
+        }
+
+        class usuario {
+            nome;
+            idade;
+            endereco;
+            email;
+
+            constructor(body) {
+                this.nome = body.nome;
+                this.idade = body.idade;
+                this.endereco = new endereco(cepBusca);
+                this.email = body.email;
+            }
+        }
+
+        ver.addEventListener('click', () => {
+            alert("Olhe o console do seu navegador");
+            for (let i = 0; i < usuarios.length; i++) {
+                const element = usuarios[i];
+                console.table(element)
+            }
+        })
+    </script>
+</body>
+
+</html>

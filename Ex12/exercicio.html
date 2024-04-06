@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagrama</title>
+</head>
+
+<body>
+    <script>
+        function inputVal() {
+            try {
+                let valIni = window.prompt("Digite a palavra que deseja ver o anagrama")
+                if (valIni == "") throw "Diggite um valor"
+                let total = 0
+                for (let i = valIni.length; i > 0; i--) {
+                    if(i == valIni.length) total = i
+                    else total = i * valIni.length
+                }
+                alert(`O total de palavra que podem ser formadas são: ${total}`)
+                inputVal()
+            } catch (error) {
+                alert(error)
+                inputVal()
+            }
+        }
+        inputVal()
+    </script>
+</body>
+
+</html>
