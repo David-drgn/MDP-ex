@@ -1,0 +1,67 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+}
+
+.register {
+    width: 50vw;
+    padding: 30px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    border: 1px solid;
+    border-radius: 10px;
+}
+
+.register>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    width: 100%;
+    gap: 10px;
+}
+
+.register>div>span {
+    font-size: 20px;
+}
+
+input,
+textarea {
+    width: 400px;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+.viewer {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.registerUser {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.base2{
+    display: none;
+}
+
+button{
+    text-align: center !important;
+}

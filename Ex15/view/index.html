@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>Imposto</title>
+</head>
+
+<body>
+    <div class="registerUser">
+        <button onclick="registerUser()">Cadastrar user</button>
+        <button onclick="login()">Login user</button>
+        <button id="view">Ver dados</button>
+        <button id="exportFile">Exportar excel para busca</button>
+        <button id="changeBase">Base 1</button>
+        <input type="file" style="display: none;" id="fileInput">
+    </div>
+    <form class="register">
+        <div class="base1">
+            <span>Código de município</span>
+            <input class="base1" type="number">
+        </div>
+        <div class="base1">
+            <span>Data de vigência</span>
+            <input class="base1" type="date">
+        </div>
+        <div class="base1">
+            <span>Código de serviço</span>
+            <input class="base1" type="number">
+        </div>
+        <div class="base1">
+            <span>Descrição da aliquota</span>
+            <input class="base1" type="text" maxlength="30">
+        </div>
+        <div class="base1">
+            <span>Percentual Alíquota (%)</span>
+            <input class="base1" type="number" max="100" min="0">
+        </div>
+        <div class="base1">
+            <span>Data e hora de manutenção</span>
+            <input class="base1" type="datetime-local">
+        </div>
+        <div class="base1">
+            <span>Usuário de manutenção</span>
+            <input class="base1" type="text" maxlength="10" disabled>
+        </div>
+
+        <div class="base2">
+            <span>Código de município</span>
+            <input class="base2" type="number">
+        </div>
+        <div class="base2">
+            <span>Data de vigência</span>
+            <input class="base2" type="date">
+        </div>
+        <div class="base2">
+            <span>Conta</span>
+            <input class="base2" type="number">
+        </div>
+        <div class="base2">
+            <span>Código de serviço</span>
+            <input class="base2" type="text" maxlength="30">
+        </div>
+        <div class="base2">
+            <span>Data e hora de manutenção</span>
+            <input class="base2" type="datetime-local">
+        </div>
+        <div class="base2">
+            <span>Usuário de manutenção</span>
+            <input class="base2" type="text" maxlength="10" disabled>
+        </div>
+        <button type="button" id="register">Criar base 1</button>
+        <button type="button" id="registerB2">Criar base 2</button>
+    </form>
+    <section class="viewer" style="display: none;">
+        <!-- <form class="register">
+            <div>
+                <span>Código de município</span>
+                <input type="number">
+            </div>
+            <div>
+                <span>Data de vigência</span>
+                <input type="date">
+            </div>
+            <div>
+                <span>Código de serviço</span>
+                <input type="number">
+            </div>
+            <div>
+                <span>Descrição da aliquota</span>
+                <input type="text" maxlength="30">
+            </div>
+            <div>
+                <span>Percentual Alíquota (%)</span>
+                <input type="number" max="100" min="0">
+            </div>
+            <div>
+                <span>Data e hora de manutenção</span>
+                <input type="datetime-local">
+            </div>
+            <div>
+                <span>Usuário de manutenção</span>
+                <input type="text" maxlength="10" disabled>
+            </div>
+            <button type="button">Editar</button>
+            <button type="button">Deletar</button>
+        </form> -->
+    </section>
+    <script src="./js/indexAPI.js"></script>
+</body>
+
+</html>
