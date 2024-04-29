@@ -30,7 +30,7 @@ app.post("/file", async (req, res) => {
         const base64 = req.body.file;
         const buffer = await base64ToArrayBuffer(base64);
 
-        var workbook = XLSX.read(buffer);
+        var workbook = XLSX.read(buffer, {raw: true});
 
         var allText = [];
 
@@ -42,7 +42,7 @@ app.post("/file", async (req, res) => {
             arr.forEach((element) => {
                 const line = worksheet[element];
                 allText.push({
-                    text: line.v,
+                    text: line.w,
                     index: element,
                     sheetName: sheetName
                 });
@@ -55,7 +55,7 @@ app.post("/file", async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 6300;
+const PORT = process.env.PORT || 4300;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

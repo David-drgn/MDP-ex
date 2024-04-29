@@ -7,6 +7,10 @@ body {
     margin: 0px;
 }
 
+h1{
+    width: 80%;
+}
+
 .register {
     width: 50vw;
     padding: 30px;
