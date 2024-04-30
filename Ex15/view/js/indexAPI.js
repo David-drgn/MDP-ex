@@ -1,5 +1,3 @@
-const { text } = require("body-parser");
-
 const transactions = []
 const transactionsFile = []
 let select = document.getElementsByTagName('input');
@@ -82,6 +80,7 @@ const login = () => {
 
 window.addEventListener('load', async () => {
     let recive = await registerUser()
+    openDialogResult("Encontrados:", ["Teste", "brabo"])
     if (!recive) location.reload()
 })
 
@@ -426,13 +425,6 @@ inputFile.addEventListener("change", async function (e) {
 
         const convertedFile = await convertToBase64(file);
 
-        const fileSet = {
-            content: convertedFile,
-            mimeType: file.type,
-            fileName: file.name,
-            fileSize: file.size,
-        };
-
         const allText = await readText(convertedFile);
         const lines = [];
 
@@ -440,7 +432,7 @@ inputFile.addEventListener("change", async function (e) {
             const element = allText[i];
             let select = lines.find(e => e.line === element.index.split(element.index.replace(/\d+/g, ""))[1])
             if (select) {
-                if(i == 1){
+                if (i == 1) {
                     let data = transformDate(element.text);
                     select.columns.push({
                         index: element.index,
@@ -448,7 +440,7 @@ inputFile.addEventListener("change", async function (e) {
                         text: data
                     })
                 }
-                else{
+                else {
                     select.columns.push(element)
                 }
             }
@@ -463,15 +455,16 @@ inputFile.addEventListener("change", async function (e) {
         }
 
         console.log(lines)
-        let find = []
+        let finds = []
         let nullable = []
         for (let i = 0; i < transactionsFile.length; i++) {
             const element = transactionsFile[i];
-            const pk = {
+            let pk = {
                 codMunicipio: element.getEvery()[0],
-                dataVigencia: element.getEvery()[1],
+                dataVigencia: new Date(element.getEvery()[1]),
                 conta: element.getEvery()[2]
             }
+            pk.dataVigencia.setDate(pk.dataVigencia.getDate() + 1)
             let pkExcel = {
                 codMunicipio: '0',
                 dataVigencia: new Date(),
@@ -486,24 +479,86 @@ inputFile.addEventListener("change", async function (e) {
                             pkExcel.codMunicipio = elementSelectColumn.text.toString()
                             break;
                         case "B1":
-                            pkExcel.dataVigencia = formatted(elementSelectColumn.text.toString())
+                            pkExcel.dataVigencia = elementSelectColumn.text
                             break;
                         case "C1":
                             pkExcel.conta = elementSelectColumn.text.toString()
                             break;
                     }
                 }
-                if (pkExcel == pk) {
-                    openDialog("Encontrados:", "Teste")
+                if (pkExcel.codMunicipio == pk.codMunicipio && pkExcel.conta == pk.conta
+                    && pkExcel.dataVigencia.getDate() === pk.dataVigencia.getDate() &&
+                    pkExcel.dataVigencia.getMonth() === pk.dataVigencia.getMonth() &&
+                    pkExcel.dataVigencia.getFullYear() === pk.dataVigencia.getFullYear()
+                ) {
+
+                    // this.pk = {
+                    //     codMunicipio: inputs[0].value,
+                    //     dataVigencia: inputs[1].value,
+                    //     codServico: inputs[2].value
+                    // }
+
+                    for (let k = 0; k < transactions.length; k++) {
+                        const elementTransactions = transactions[k];
+
+                        const pk1 = {
+                            codMunicipio: elementTransactions.getEvery()[0],
+                            dataVigencia: new Date(elementTransactions.getEvery()[1]),
+                            codServico: elementTransactions.getEvery()[2],
+                        }
+                        pk1.dataVigencia.setDate(pk1.dataVigencia.getDate() + 1)
+
+                        const pkrequired = {
+                            codMunicipio: elementColumn.columns[0].text,
+                            dataVigencia: pkExcel.dataVigencia,
+                            codServico: element.getEvery()[3]
+                        }
+
+                        if (pkrequired.codMunicipio == pk1.codMunicipio && pkrequired.codServico == pk1.codServico
+                            && pkrequired.dataVigencia.getDate() === pk1.dataVigencia.getDate() &&
+                            pkrequired.dataVigencia.getMonth() === pk1.dataVigencia.getMonth() &&
+                            pkrequired.dataVigencia.getFullYear() === pk1.dataVigencia.getFullYear()) finds.push(elementTransactions)
+                        else nullable.push(element)
+                    }
                 }
             }
         }
+
+        document.getElementsByClassName('register')[0].style.display = 'none'
+        document.getElementsByClassName('viewer')[0].style.display = 'flex'
+
+        const container = document.querySelector('.viewer');
+
+        if (container) {
+            container.innerHTML = '';
+        } else {
+            console.error('Seção com a classe "viewer" não encontrada.');
+        }
+
+        let divider = document.createElement('h1')
+        divider.textContent = "Encontrados: "
+        container.appendChild(divider)
+
+        for (let i = 0; i < finds.length; i++) {
+            const element = finds[i];
+            view(element)
+        }
+
+        let divider1 = document.createElement('h1')
+        divider1.textContent = "Nulos: "
+        container.appendChild(divider1)
+
+        for (let i = 0; i < nullable.length; i++) {
+            const element = nullable[i];
+            view2(element)
+        }
     }
+    this.value = "";
 });
 
 const transformDate = (dataString) => {
-var partesData = dataString.split('/');
-return new Date(parseInt(partesData[2]) + 2000, parseInt(partesData[0]) - 1, parseInt(partesData[1]));
+    var partesData = dataString.split('/');
+    return new Date(parseInt(partesData[2]) + 2000, parseInt(partesData[0]) - 1, parseInt(partesData[1]));
 }
 
 const readText = async (content) => {
@@ -560,5 +615,5 @@ const openDialog = (title, message) => {
 
 const formatted = (dateString) => {
     let partes = dateString.split("/");
-    return (`${partes[2]}-${partes[0]}-${partes[1]}`)
+    return new Date(`${partes[2]}-${partes[0]}-${partes[1]}`);
 }
