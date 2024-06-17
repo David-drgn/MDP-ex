@@ -27,7 +27,6 @@
         <span>Valor total extra: <b>0</b></span>
     </div>
     <script>
-        console.log("oi")
         let total = 0
         const inputs = document.getElementsByTagName('input')
         for (let i = 0; i < inputs.length; i++) {
@@ -45,7 +44,7 @@
                     }
                     else {
                         const index = i == 1? 0 : i == 3 ? 1 : i == 5 ? 2 : 0;
-                        document.getElementsByTagName('b')[index].textContent = "0"
+                        document.getElementsByTagName('b')[index].textContent = "1"
                     }
                     document.getElementsByTagName('b')[3].textContent = parseInt(document.getElementsByTagName('b')[0].textContent) + parseInt(document.getElementsByTagName('b')[1].textContent) + parseInt(document.getElementsByTagName('b')[2].textContent)
                 })

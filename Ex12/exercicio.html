@@ -12,14 +12,13 @@
         function inputVal() {
             try {
                 let valIni = window.prompt("Digite a palavra que deseja ver o anagrama")
-                if (valIni == "") throw "Diggite um valor"
+                if (valIni == "") throw "Digite um valor"
                 let total = 0
                 for (let i = valIni.length; i > 0; i--) {
                     if(i == valIni.length) total = i
-                    else total = i * valIni.length
+                    else total = i * total
                 }
                 alert(`O total de palavra que podem ser formadas são: ${total}`)
-                inputVal()
             } catch (error) {
                 alert(error)
                 inputVal()

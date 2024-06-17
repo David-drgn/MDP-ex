@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const transforma = (dec) => {
+            var binario = dec >= 0 ? dec.toString(2) : (~dec).toString(2);
+            var tamanho = binario.length > 32 ? 64 : binario.length > 16 ? 32 : binario.length > 8 ? 16 : 8;
+            return ("0".repeat(tamanho) + binario).substr(-tamanho);
+        }
+        function binario() {
+            let val = prompt("Digite o valor")
+
+            try {
+                let bin = true
+                for (let i = 0; i < val.length; i++) {
+                    const element = val[i];
+                    if (element != "1" && element != "0") {
+                        bin = false
+                    }
+                }
+                val = parseInt(val)
+                if (!bin) {
+                    let valor = transforma(val)
+                    alert(valor)
+                }
+                else {
+                    let valor = parseInt(val, 2);
+                    alert(valor)
+                }
+            } catch (error) {
+                alert("Digite um número")
+                binario()
+            }
+        }
+        binario()
+    </script>
+</body>
+
+</html>
